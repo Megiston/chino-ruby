@@ -1555,7 +1555,7 @@ module ChinoRuby
       blob.path = destination
       file_path = destination# ha piu' senso sia un path assoluto
       FileUtils.mkdir_p(file_path) unless File.exist?(file_path)
-      File.open(File.join(file_path+filename), 'wb') { |file|
+      File.open(File.join(file_path, filename), 'wb') { |file|
         file << res.body
         blob.md5 = (Digest::MD5.file file).hexdigest
         blob.sha1 = (Digest::SHA1.file file).hexdigest
