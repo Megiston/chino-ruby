@@ -1564,6 +1564,27 @@ module ChinoRuby
       blob
     end
 
+    def get_token(blob_id, one_time=false, duration=nil)
+      check_string(blob_id)
+      uri = "/blobs/#{blob_id}/generate"
+      data = {}
+      if one_time
+        data[:one_time] = true
+      end
+      if duration
+        data[:duration] = duration.to_i
+      end
+      res = post_resource uri.to_s, data.to_json
+    end
+
+    def get_url(blob_id, one_time: false, mime_type: nil, duration: nil)
+      res = get_token(blob_id, one_time, duration)
+      token = res["token"]
+      uri = "/blobs/url/#{blob_id}?token=#{token}"
+      uri += "&mimetype=#{mime_type}" if mime_type
+      return_uri(uri)
+    end
+
     def delete_blob(blob_id, force)
       check_string(blob_id)
       check_boolean(force)
