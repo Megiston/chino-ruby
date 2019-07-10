@@ -1329,12 +1329,15 @@ module ChinoRuby
       else
         docs.from_json(post_resource("/search/documents/#{schema_id}", data, limit, offset).to_json)
       end
-      ds = docs.documents
-      docs.documents = []
-      ds.each do |d|
-        doc = Document.new
-        doc.from_json(d.to_json)
-        docs.documents.push(doc)
+      if result_type == "ONLY_ID"
+      else
+        ds = docs.documents
+        docs.documents = []
+        ds.each do |d|
+          doc = Document.new
+          doc.from_json(d.to_json)
+          docs.documents.push(doc)
+        end
       end
       docs
     end
