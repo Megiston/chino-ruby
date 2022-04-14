@@ -1315,6 +1315,25 @@ module ChinoRuby
     end
   end
 
+  class GetMany < ChinoBaseAPI
+    def get_many(ids)
+      check_json(ids)
+      data = {ids: ids}.to_json
+      docs = GetDocumentsResponse.new
+      docs.from_json(post_resource("/documents/_get_many", data).to_json)
+      ds = docs.documents
+      docs.documents = []
+      ds.each do |k,d|
+        d.delete("repository_is_active")
+        d.delete("schema_is_active")
+        doc = Document.new
+        doc.from_json(d.to_json)
+        docs.documents.push(doc)
+      end
+      docs
+    end
+  end
+
   class Search < ChinoBaseAPI
     def search_documents(schema_id, result_type, filter_type, sort, filter, limit=nil, offset=nil)
       check_string(schema_id)

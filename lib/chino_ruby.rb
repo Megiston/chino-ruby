@@ -38,7 +38,7 @@ require_relative "chino_ruby/classes"
 #   @client.repositories.create_repository(...)
 class ChinoAPI < ChinoRuby::CheckValues
 
-    attr_accessor :applications, :auth, :repositories, :schemas, :documents, :user_schemas, :users, :groups, :collections, :permissions, :search, :blobs
+    attr_accessor :applications, :auth, :repositories, :schemas, :documents, :user_schemas, :users, :groups, :collections, :permissions, :search, :blobs, :get_many
 
     # Use this function to initialize your client variable
     # * customer_id: your customer id value
@@ -62,6 +62,7 @@ class ChinoAPI < ChinoRuby::CheckValues
         @collections = ChinoRuby::Collections.new(@customer_id, @customer_key, @host_url)
         @permissions = ChinoRuby::Permissions.new(@customer_id, @customer_key, @host_url)
         @search = ChinoRuby::Search.new(@customer_id, @customer_key, @host_url)
+        @get_many = ChinoRuby::GetMany.new(@customer_id, @customer_key, @host_url)
         @blobs = ChinoRuby::Blobs.new(@customer_id, @customer_key, @host_url)
     end
 end
