@@ -932,7 +932,7 @@ module ChinoRuby
   class GetDocumentsResponse
     include ActiveModel::Serializers::JSON
 
-    attr_accessor :count, :total_count, :limit, :offset, :documents, :IDs
+    attr_accessor :count, :total_count, :limit, :offset, :documents, :IDs, :errors
 
     def attributes=(hash)
       hash.each do |key, value|
