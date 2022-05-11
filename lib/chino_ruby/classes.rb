@@ -1326,6 +1326,8 @@ module ChinoRuby
       ds.each do |k,d|
         d.delete("repository_is_active")
         d.delete("schema_is_active")
+        errors = d.delete("errors")
+        puts errors if errors.present?
         doc = Document.new
         doc.from_json(d.to_json)
         docs.documents.push(doc)
