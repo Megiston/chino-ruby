@@ -1320,7 +1320,7 @@ module ChinoRuby
       check_json(ids)
       data = {ids: ids}.to_json
       docs = GetDocumentsResponse.new
-      docs.from_json(post_resource("/documents/_get_many", data).to_json)
+      docs.from_json(post_resource("/documents/bulk_get", data).to_json)
       ds = docs.documents
       docs.documents = []
       ds.each do |k,d|
