@@ -203,6 +203,30 @@ module ChinoRuby
       JSON.parse(parse_response(res).to_json)['result']
     end
 
+    def delete_resource_schema(path, force, all_content)
+      check_string(path)
+      check_boolean(force)
+      check_boolean(all_content)
+
+      if force && all_content
+        uri = return_uri(path+"?force=true&true")
+      elsif force
+        uri = return_uri(path+"?force=true")
+      else
+        uri = return_uri(path)
+      end
+      req = Net::HTTP::Delete.new(uri)
+      if @customer_id == "Bearer "
+        req.add_field("Authorization", @customer_id+@customer_key)
+      else
+        req.basic_auth @customer_id, @customer_key
+      end
+      res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => true) {|http|
+        http.request(req)
+      }
+      JSON.parse(parse_response(res).to_json)['result']
+    end
+
     #base function to parse the response and raise "chino" errors if problems occurred
     def parse_response(response, raw=false)
       if response.is_a?(Net::HTTPServerError)
@@ -900,10 +924,10 @@ module ChinoRuby
       schema
     end
 
-    def delete_schema(schema_id, force)
+    def delete_schema(schema_id, force, all_resource=false)
       check_string(schema_id)
       check_boolean(force)
-      delete_resource("/schemas/#{schema_id}", force)
+      delete_resource_schema("/schemas/#{schema_id}", force, all_resource)
     end
   end
 
