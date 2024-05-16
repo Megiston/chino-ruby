@@ -924,6 +924,13 @@ module ChinoRuby
       schema
     end
 
+    def convert_schema(schema_id, fields)
+      check_string(schema_id)
+      check_json(fields)
+      data = { "fields": fields}.to_json
+      post_resource("/schemas/convert/#{schema_id}", data)
+    end
+
     def delete_schema(schema_id, force, all_resource=false)
       check_string(schema_id)
       check_boolean(force)
